@@ -19,6 +19,11 @@ $result2 = mysqli_query($conn, $sql2);
 <body>
     <div>
         <table border="1">
+            <tr>
+                <td style="text-align: center; height:80px" colspan="6">
+                    <h1>Video</h1>
+                </td>
+            </tr>
             <tr style="text-align: center;">
                 <td>id</td>
                 <td>judul</td>
@@ -39,7 +44,7 @@ $result2 = mysqli_query($conn, $sql2);
                     <td><?= $id; ?></td>
                     <td><?= $judul; ?></td>
                     <td><?= $type; ?></td>
-                    <td><?= $isi; ?></td>
+                    <td><iframe width="640" height="360" src="<?= $isi; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
                     <td><?= $create; ?></td>
                     <td><?= $update; ?></td>
                 </tr>
@@ -49,6 +54,11 @@ $result2 = mysqli_query($conn, $sql2);
     <br><br>
     <div>
         <table border="1">
+            <tr>
+                <td style="text-align: center; height:80px" colspan="6">
+                    <h1>Artikel</h1>
+                </td>
+            </tr>
             <tr style="text-align: center;">
                 <td>id</td>
                 <td>judul</td>
