@@ -1,18 +1,16 @@
 <?php
-include 'connection.php';
 include 'disperror.php';
-$pilihan = $_POST['pilihan'];
-date_default_timezone_set('Asia/Jakarta');
-$timestamp = date('h:i A d/m/Y' . " WIB");
-?>
-<?php /*
-$nama = $_POST['nama'];
-$judul = $_POST['judul'];
-$isi = $_POST['link'];
-$instvid = "INSERT INTO `FILES`(`judul`,`file_type_id`,`isi`,`created_at`) VALUES ('$judul','$pilihan','$isi','$timestamp')";
-$run = mysqli_query($conn, $instvid);
-*/?>
+include 'connection.php';
+$pilihan = "Video";
 
+// untuk check apa ada inputan pilihan
+if (isset($_POST['pilihan']) && $_POST['pilihan'] != "") {
+    $pilihan = $_POST['pilihan'];
+}
+
+date_default_timezone_set('Asia/Jakarta');
+$timestamp = date('h:i A d/m/Y');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,45 +27,64 @@ $run = mysqli_query($conn, $instvid);
             selector: '#format'
         });
     </script>
+    <style>
+        input{
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <form action="" method="post">
         <select name="pilihan" onchange="this.form.submit()">
-            <option disabled selected value="">Select an Option</option>
-            <option value="Video">Video</option>
-            <option value="Artikel">Artikel</option>
+            <option value="">Select an Option</option>
+            <option value="Video" <?php echo ($pilihan === "Video") ? "selected" : "" ?>>Video</option>
+            <option value="Artikel" <?php echo ($pilihan === "Artikel") ? "selected" : "" ?>>Artikel</option>
         </select>
     </form>
     <br><br>
-    <?php
-    if ($pilihan == "Video") { ?>`
-    <!-- <form action="" method="post">
-        <input type="text" name="nama" placeholder="Masukan nama" id=""><br>
-        <input type="text" name="judul" placeholder="Masukan judul" id=""><br>
-        <input type="url" name="link" placeholder="Masukan URL" id=""><br>
-        <!-- <input type="url" name="" id="">
-        <input type="submit" value="Submit">
-    </form> -->
-    <?php include 'inputvid.php'; ?>
-<?php } ?>
+    <?php if ($pilihan == "Video") { ?>
+        <form action="" method="post">
+            <input type="hidden" name="pilihan" value="<?=$pilihan?>"><br>
+            <input type="text" name="nama" placeholder="Masukan nama" id=""><br>
+            <input type="text" name="judul" placeholder="Masukan judul" id=""><br>
+            <!-- <input type="text" name="link" placeholder="Masukan URL" id=""><br> -->
+            <input type="text" name="isi" placeholder="Masukan URL" id=""><br>
+            <input type="submit" name="btnSubmit" value="Submit">
+        </form>
+        <?php
+        if (isset($_POST['btnSubmit'])) {
+            $nama = (isset($_POST['nama'])) ? $_POST['nama'] : "";
+            $judul = (isset($_POST['judul'])) ? $_POST['judul'] : "";
+            $isi = (isset($_POST['isi'])) ? $_POST['isi'] : "";
+            
+            $instvid = "INSERT INTO `FILES`(`author`,`judul`,`file_type_id`,`isi`,`created_at`) VALUES ('', '$judul','$pilihan','$isi','$timestamp')";
 
+            echo $instvid;
+            mysqli_query($conn, $instvid);
+            
+        }
+        ?>
+    <?php } ?>
 
-<?php if ($pilihan == "Artikel") : ?>
-    <form action="" method="post">
-        <input type="text" name="nama2" id="" placeholder="Masukan nama"><br>
-        <input type="text" name="judul2" placeholder="masukan judul" id=""><br>
-        <textarea style="width: 360px;" name="isi2" id="format" cols="30" rows="10"></textarea><br>
-        <input type="submit" value="Submit">
-    </form>
-    <?php
-    $nama2 = $_POST['nama2'];
-    $judul2 = $_POST['judul2'];
-    $isi2 = $_POST['isi2'];
-    $instart = "INSERT INTO `FILES`(`judul`,`file_type_id`,`isi`,`created_at`) VALUES ('$judul2','$pilihan','$isi2','$timestamp')";
-    $run2 = mysqli_query($conn, $instart);
-    ?>
-<?php endif ?>
+    <?php if ($pilihan == "Artikel") { ?>
+        <form action="" method="post">
+            <input type="hidden" name="pilihan" value="<?=$pilihan?>"><br>
+            <input type="text" name="nama2" id="" placeholder="Masukan nama"><br>
+            <input type="text" name="judul2" placeholder="masukan judul" id=""><br>
+            <textarea style="width: 360px;" name="isi2" id="format" cols="30" rows="10"></textarea><br>
+            <input type="submit" name="btnSubmit2" value="Submit">
+        </form>
+        <?php
+            if (isset($_POST['btnSubmit2'])) {
+                $nama2 = (isset($_POST['nama2'])) ? $_POST['nama2'] : "";
+                $judul2 = (isset($_POST['judul2'])) ? $_POST['judul2'] : "";
+                $isi2 = (isset($_POST['isi2'])) ? $_POST['isi2'] : "";            
+                $instart = "INSERT INTO `FILES`(`author`,`judul`,`file_type_id`,`isi`,`created_at`) VALUES ('$nama2','$judul2','$pilihan','$isi2','$timestamp')";
+                mysqli_query($conn, $instart);
+            }
+        ?>
+    <?php } ?>
 </body>
 
 </html>
